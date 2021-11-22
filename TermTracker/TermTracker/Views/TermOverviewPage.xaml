@@ -2,16 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TermTracker.TermOverviewPage">
-
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Grid ColumnDefinitions="*,*">
+                <Label Text="Term Tracker" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="Title" />
+                <Label x:Name="addTermLabel" Grid.Column="1"  Text="+" HorizontalOptions="End" TextColor="White" FontSize="Title" />
+            </Grid>
+        </StackLayout>
+    </NavigationPage.TitleView>
     <StackLayout>
-        <Frame BackgroundColor="Blue" Padding="8" CornerRadius="0">
-            <StackLayout>
-                <Grid ColumnDefinitions="*,*">
-                    <Label Text="Term Tracker" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="Title" />
-                    <Label x:Name="addTermLabel" Grid.Column="1"  Text="+" HorizontalOptions="End" TextColor="White" FontSize="Title" />
-                </Grid>
-            </StackLayout>
-        </Frame>
         <Frame>
             <StackLayout x:Name="termListStack">
                 <!--Added in code-->

@@ -21,6 +21,11 @@ namespace TermTracker
             InitializeComponent();
             database = _database;
             AddTapSetup();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             PopulateTerms();
         }
 
@@ -67,6 +72,8 @@ namespace TermTracker
 
         private async void PopulateTerms()
         {
+            termListStack.Children.Clear();
+            termFrames.Clear();
             var terms = await database.TermManager.GetAllAsync();
             if (terms.Count == 0)
             {
