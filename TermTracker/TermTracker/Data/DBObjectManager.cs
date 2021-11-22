@@ -21,6 +21,17 @@ namespace TermTracker.Data
             return dbconnection.Table<T>().ToListAsync();
         }
 
+        public T GetAt(int i)
+        {
+            var list_task = GetAllAsync();
+            list_task.Wait();
+            var list = list_task.Result;
+            if (i < 0 || i >= list.Count)
+                throw new IndexOutOfRangeException();
+            else
+                return list[i];
+        }
+
         public Task<int> AddAsync(T t)
         {
             return dbconnection.InsertAsync(t);

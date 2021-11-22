@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using TermTracker.Data;
+using TermTracker.Models;
 using System.IO;
 
 namespace TermTracker
@@ -23,7 +24,7 @@ namespace TermTracker
         public App()
         {
             InitializeComponent();
-            MainPage = new TermOverviewPage(Database);
+            MainPage = new NavigationPage(new TermOverviewPage(Database));
         }
 
         protected override void OnStart()

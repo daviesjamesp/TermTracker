@@ -4,21 +4,20 @@
              x:Class="TermTracker.TermOverviewPage">
 
     <StackLayout>
-        <Frame BackgroundColor="Pink" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+        <Frame BackgroundColor="Blue" Padding="8" CornerRadius="0">
+            <StackLayout>
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="Term Tracker" HorizontalOptions="StartAndExpand" TextColor="White" FontSize="Title" />
+                    <Label x:Name="addTermLabel" Grid.Column="1"  Text="+" HorizontalOptions="End" TextColor="White" FontSize="Title" />
+                </Grid>
+            </StackLayout>
         </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Wow, it actually started after all that crap coding. GO TO BED." FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
+        <Frame>
+            <StackLayout x:Name="termListStack">
+                <!--Added in code-->
+            </StackLayout>
+        </Frame>
+        
     </StackLayout>
 
 </ContentPage>

@@ -11,19 +11,19 @@ namespace TermTracker.Data
     {
         readonly SQLiteAsyncConnection dbconnection;
 
-        readonly DBObjectManager<Instructor> instructorManager;
-        readonly DBObjectManager<Assessment> assessmentManager;
-        readonly DBObjectManager<Course> courseManager;
-        readonly DBObjectManager<Term> termManager;
+        public DBObjectManager<Instructor> InstructorManager { get; }
+        public DBObjectManager<Assessment> AssessmentManager { get; }
+        public DBObjectManager<Course> CourseManager { get; }
+        public DBObjectManager<Term> TermManager { get; }
 
         public ModelDB(string dbPath)
         {
             dbconnection = new SQLiteAsyncConnection(dbPath);
 
-            instructorManager = new DBObjectManager<Instructor>(dbconnection);
-            assessmentManager = new DBObjectManager<Assessment>(dbconnection);
-            courseManager = new DBObjectManager<Course>(dbconnection);
-            termManager = new DBObjectManager<Term>(dbconnection);
+            InstructorManager = new DBObjectManager<Instructor>(dbconnection);
+            AssessmentManager = new DBObjectManager<Assessment>(dbconnection);
+            CourseManager = new DBObjectManager<Course>(dbconnection);
+            TermManager = new DBObjectManager<Term>(dbconnection);
         }
 
     }
