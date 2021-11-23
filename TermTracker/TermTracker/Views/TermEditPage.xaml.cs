@@ -13,7 +13,7 @@ namespace TermTracker
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TermEditPage : ContentPage
     {
-        public bool Saved { get; set; }
+        private bool saved = false;
 
         private readonly ModelDB database;
         private readonly Term term;
@@ -26,9 +26,19 @@ namespace TermTracker
             InitializeComponent();
             database = _database;
             term = _term;
-            Saved = false;
             courseFrames = new List<Frame>() { c0Frame, c1Frame, c2Frame, c3Frame, c4Frame, c5Frame };
-            // same as overview page, moved to onappearing
+            TapSetup();
+        }
+
+        private void TapSetup()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                var targetFrame = FindByName($"c{i}Frame") as Frame;
+                var newTGR = new TapGestureRecognizer();
+                newTGR.Tapped += OpenCourseForEdit;
+                targetFrame.GestureRecognizers.Add(newTGR);
+            }
         }
 
         protected override void OnAppearing()
@@ -49,7 +59,6 @@ namespace TermTracker
                 var course = GetCourseByTermSlot(i);
                 termCourses.Add(course);
 
-                var targetFrame = FindByName($"c{i}Frame") as Frame;
                 var targetName = FindByName($"c{i}Name") as Label;
                 var targetDates = FindByName($"c{i}Dates") as Label;
 
@@ -63,14 +72,10 @@ namespace TermTracker
                     targetName.Text = course.Name;
                     targetDates.Text = course.StartDate.ToString("d") + " - " + course.EndDate.ToString("d");
                 }
-
-                var newTGR = new TapGestureRecognizer();
-                newTGR.Tapped += OpenCourseForEdit;
-                targetFrame.GestureRecognizers.Add(newTGR);
             }
         }
 
-        private void OpenCourseForEdit(object _, EventArgs e)
+        private async void OpenCourseForEdit(object _, EventArgs e)
         {
             var sendingFrame = _ as Frame;
             int courseSlot = -1;
@@ -85,13 +90,17 @@ namespace TermTracker
 
             var courseToEdit = GetCourseByTermSlot(courseSlot);
             if (courseToEdit is null)
+            {       
                 courseToEdit = new Course()
-                { 
+                {
                     Name = "NewCourse",
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today
                 };
-
+                database.CourseManager.AddAsync(courseToEdit).Wait();
+                term.SetCourseIDBySlot(courseSlot, courseToEdit.ID);
+                database.TermManager.UpdateAsync(term).Wait();
+            }
             await Navigation.PushAsync(new CourseEditPage(database, courseToEdit));
         }
 
@@ -104,33 +113,9 @@ namespace TermTracker
                 cachedCourseList = list_task.Result;
             }
 
-            int targetCourseID;
-            switch (slot)
-            {
-                // Please forgive me for this abomination
-                case 0:
-                    targetCourseID = term.Course0;
-                    break;
-                case 1:
-                    targetCourseID = term.Course1;
-                    break;
-                case 2:
-                    targetCourseID = term.Course2;
-                    break;
-                case 3:
-                    targetCourseID = term.Course3;
-                    break;
-                case 4:
-                    targetCourseID = term.Course4;
-                    break;
-                case 5:
-                    targetCourseID = term.Course5;
-                    break;
-                default:
-                    throw new Exception("How could this possibly have happened?");
-            }
+            int targetCourseID = term.GetCourseIDBySlot(slot);
 
-            if (targetCourseID == 0)
+            if (targetCourseID < 1)
                 return null;
             else
                 return cachedCourseList.Where(c => c.ID == targetCourseID).FirstOrDefault();
@@ -138,7 +123,7 @@ namespace TermTracker
 
         private async void closeButton_Clicked(object sender, EventArgs e)
         {
-            if (Saved)
+            if (saved)
             {
                 await Navigation.PopAsync();
             }
@@ -165,7 +150,7 @@ namespace TermTracker
             term.EndDate = endDatePicker.Date;
 
             database.TermManager.UpdateAsync(term).Wait();
-            Saved = true;
+            saved = true;
         }
     }
 }

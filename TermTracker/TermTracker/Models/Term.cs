@@ -18,5 +18,54 @@ namespace TermTracker.Models
         public int Course3 { get; set; }
         public int Course4 { get; set; }
         public int Course5 { get; set; }
+
+        public int GetCourseIDBySlot(int slot)
+        {
+            switch (slot)
+            {
+                case 0:
+                    return Course0;
+                case 1:
+                    return Course1;
+                case 2:
+                    return Course2;
+                case 3:
+                    return Course3;
+                case 4:
+                    return Course4;
+                case 5:
+                    return Course5;
+                default:
+                    return -1;
+            }
+        }
+
+        public void SetCourseIDBySlot(int slot, int courseID)
+        {
+            switch (slot)
+            {
+                case 0:
+                    Course0 = courseID;
+                    break;
+                case 1:
+                    Course0 = courseID;
+                    break;
+                case 2:
+                    Course0 = courseID;
+                    break;
+                case 3:
+                    Course0 = courseID;
+                    break;
+                case 4:
+                    Course0 = courseID;
+                    break;
+                case 5:
+                    Course0 = courseID;
+                    break;
+                default:
+                    // do nothing
+                    break;
+            }
+        }
     }
 }

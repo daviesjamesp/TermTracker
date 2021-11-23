@@ -4,18 +4,18 @@
              x:Class="TermTracker.CourseEditPage">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
-            <Label x:Name="termTitleLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Title"/>
+            <Label x:Name="courseTitleLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Title"/>
         </StackLayout>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
-            <Frame x:Name="termGlobalAttributesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,6,3,3" Padding="15,5,15,5">
+            <Frame x:Name="courseGlobalAttributesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,6,3,3" Padding="15,5,15,5">
                 <StackLayout>
-                    <Label Text="Change Term Name:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Editor x:Name="termNameEditor" Margin="0,-10,0,0"/>
+                    <Label Text="Change Course Name:" TextColor="Black" HorizontalOptions="Start"/>
+                    <Editor x:Name="courseNameEditor" Margin="0,-10,0,0"/>
                 </StackLayout>
             </Frame>
-            <Frame x:Name="termDatesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,5">
+            <Frame x:Name="courseDatesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,5">
                 <Grid ColumnDefinitions="*,*">
                     <StackLayout>
                         <Label Text="Start Date:" TextColor="Black" HorizontalOptions="Start"/>
@@ -27,24 +27,30 @@
                     </StackLayout>
                 </Grid>
             </Frame>
-            <Frame>
+            <Frame x:Name="courseStatusFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
+                <StackLayout>
+                    <Label Text="Course Status:" TextColor="Black" HorizontalOptions="Start"/>
+                    <Picker x:Name="statusPicker"/>
+                </StackLayout>
+            </Frame>
+            <Frame x:Name="instructorFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
                 <!--COURSE STATUS FRAME GOES HERE-->
             </Frame>
-            <Frame x:Name="coursesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,15">
+            <Frame x:Name="assmtFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,15">
                 <StackLayout>
-                    <Label Text="Courses:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Frame x:Name="c0Frame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
+                    <Label Text="Assessments:" TextColor="Black" HorizontalOptions="Start"/>
+                    <Frame x:Name="perfFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
                         <Grid ColumnDefinitions="*,*,*">
-                            <Label x:Name="c0Name" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
-                            <Label x:Name="c0Dates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
-                            <Label x:Name="c0Arrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
+                            <Label x:Name="perfName" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
+                            <Label x:Name="perfDates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
+                            <Label x:Name="perfArrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
                         </Grid>
                     </Frame>
-                    <Frame x:Name="c1Frame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
+                    <Frame x:Name="objFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
                         <Grid ColumnDefinitions="*,*,*">
-                            <Label x:Name="c1Name" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
-                            <Label x:Name="c1Dates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
-                            <Label x:Name="c1Arrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
+                            <Label x:Name="objName" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
+                            <Label x:Name="objDates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
+                            <Label x:Name="objArrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
                         </Grid>
                     </Frame>
                 </StackLayout>
