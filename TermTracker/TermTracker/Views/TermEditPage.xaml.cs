@@ -84,8 +84,15 @@ namespace TermTracker
             }
 
             var courseToEdit = GetCourseByTermSlot(courseSlot);
-            
-            // open course edit page here
+            if (courseToEdit is null)
+                courseToEdit = new Course()
+                { 
+                    Name = "NewCourse",
+                    StartDate = DateTime.Today,
+                    EndDate = DateTime.Today
+                };
+
+            await Navigation.PushAsync(new CourseEditPage(database, courseToEdit));
         }
 
         private Course GetCourseByTermSlot(int slot)
@@ -129,14 +136,36 @@ namespace TermTracker
                 return cachedCourseList.Where(c => c.ID == targetCourseID).FirstOrDefault();
         }
 
-        private void closeButton_Clicked(object sender, EventArgs e)
+        private async void closeButton_Clicked(object sender, EventArgs e)
         {
-
+            if (Saved)
+            {
+                await Navigation.PopAsync();
+            }
+            else
+            {
+                var response = await DisplayAlert("", "Quit without saving?", "Yes", "No");
+                if (response)
+                {
+                    await Navigation.PopAsync();
+                }
+            }
         }
 
         private void saveButton_Clicked(object sender, EventArgs e)
         {
+            if (termNameEditor.Text.Length > 0)
+            {
+                term.Name = termNameEditor.Text;
+                termNameEditor.Text = "";
+                termTitleLabel.Text = term.Name;
+            }
 
+            term.StartDate = startDatePicker.Date;
+            term.EndDate = endDatePicker.Date;
+
+            database.TermManager.UpdateAsync(term).Wait();
+            Saved = true;
         }
     }
 }
