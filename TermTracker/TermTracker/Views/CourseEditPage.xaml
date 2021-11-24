@@ -12,29 +12,36 @@
             <Frame x:Name="courseGlobalAttributesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,6,3,3" Padding="15,5,15,5">
                 <StackLayout>
                     <Label Text="Change Course Name:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Editor x:Name="courseNameEditor" Margin="0,-10,0,0"/>
+                    <Editor x:Name="courseNameEditor" Margin="0,-20,0,0"/>
                 </StackLayout>
             </Frame>
             <Frame x:Name="courseDatesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,5">
                 <Grid ColumnDefinitions="*,*">
                     <StackLayout>
                         <Label Text="Start Date:" TextColor="Black" HorizontalOptions="Start"/>
-                        <DatePicker x:Name="startDatePicker"/>
+                        <DatePicker x:Name="startDatePicker" Margin="0,-5,0,0"/>
                     </StackLayout>
                     <StackLayout Grid.Column="1">
                         <Label Text="End Date:" TextColor="Black" HorizontalOptions="Start"/>
-                        <DatePicker x:Name="endDatePicker"/>
+                        <DatePicker x:Name="endDatePicker" Margin="0,-5,0,0"/>
                     </StackLayout>
                 </Grid>
             </Frame>
             <Frame x:Name="courseStatusFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
                 <StackLayout>
                     <Label Text="Course Status:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Picker x:Name="statusPicker"/>
+                    <Picker x:Name="statusPicker" Margin="0,-15,0,0"/>
                 </StackLayout>
             </Frame>
             <Frame x:Name="instructorFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
-                <!--COURSE STATUS FRAME GOES HERE-->
+                <StackLayout>
+                    <Label Text="Instructor Name:" TextColor="Black" Margin="0,0,0,0"/>
+                    <Editor x:Name="instructorNameEditor" Margin="0,-20,0,0"/>
+                    <Label Text="Instructor Email:" TextColor="Black" Margin="0,-5,0,0"/>
+                    <Editor x:Name="instructorEmailEditor" Margin="0,-20,0,0"/>
+                    <Label Text="Instructor Phone:" TextColor="Black" Margin="0,-5,0,0"/>
+                    <Editor x:Name="instructorPhoneEditor" Margin="0,-20,0,0"/>
+                </StackLayout>
             </Frame>
             <Frame x:Name="assmtFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,15">
                 <StackLayout>
@@ -56,7 +63,7 @@
                 </StackLayout>
             </Frame>
             <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">
-                <Button x:Name="closeButton" Text="Cancel" Clicked="closeButton_Clicked"/>
+                <Button x:Name="closeButton" Text="Close" Clicked="closeButton_Clicked"/>
                 <Button x:Name="saveButton" Text="Save" Grid.Column="1" Clicked="saveButton_Clicked"/>
             </Grid>
         </StackLayout>

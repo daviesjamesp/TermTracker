@@ -48,19 +48,19 @@ namespace TermTracker.Models
                     Course0 = courseID;
                     break;
                 case 1:
-                    Course0 = courseID;
+                    Course1 = courseID;
                     break;
                 case 2:
-                    Course0 = courseID;
+                    Course2 = courseID;
                     break;
                 case 3:
-                    Course0 = courseID;
+                    Course3 = courseID;
                     break;
                 case 4:
-                    Course0 = courseID;
+                    Course4 = courseID;
                     break;
                 case 5:
-                    Course0 = courseID;
+                    Course5 = courseID;
                     break;
                 default:
                     // do nothing

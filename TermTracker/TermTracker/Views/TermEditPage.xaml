@@ -75,7 +75,7 @@
                 </StackLayout>
             </Frame>
             <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">
-                <Button x:Name="closeButton" Text="Cancel" Clicked="closeButton_Clicked"/>
+                <Button x:Name="closeButton" Text="Close" Clicked="closeButton_Clicked"/>
                 <Button x:Name="saveButton" Text="Save" Grid.Column="1" Clicked="saveButton_Clicked"/>
             </Grid>
         </StackLayout>

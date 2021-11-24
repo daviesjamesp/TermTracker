@@ -15,6 +15,7 @@ namespace TermTracker
     {
         private readonly ModelDB database;
         private readonly Course course;
+        private string[] statuses = new string[] { "Not Started", "In Progress", "Completed" };
 
         private bool saved = false;
 
@@ -23,6 +24,65 @@ namespace TermTracker
             InitializeComponent();
             database = _database;
             course = _course;
+            foreach (var s in statuses)
+            {
+                statusPicker.Items.Add(s);
+            }
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            InitializeFields();
+        }
+
+        private void InitializeFields()
+        {
+            courseTitleLabel.Text = course.Name;
+            startDatePicker.Date = course.StartDate;
+            endDatePicker.Date = course.EndDate;
+
+            if (course.InstructorID > 1)
+            {
+                var i = database.InstructorManager.GetAt(course.InstructorID);
+                instructorNameEditor.Text = i.Name is null ? "" : i.Name;
+                instructorEmailEditor.Text = i.Email is null ? "" : i.Email;
+                instructorPhoneEditor.Text = i.Phone is null ? "" : i.Phone;
+            }
+
+            if (course.Status == "Completed")
+            {
+                statusPicker.SelectedIndex = 2;
+            }
+            else if (course.Status == "In Progress")
+            {
+                statusPicker.SelectedIndex = 1;
+            }
+            else
+            {
+                statusPicker.SelectedIndex = 0;
+            }
+
+            if (course.PerformanceID > 1)
+            {
+                var p = database.AssessmentManager.GetAt(course.PerformanceID);
+                // finish initialization
+            }
+            else
+            {
+                // no assessment added
+            }
+
+            if (course.ObjectiveID > 1)
+            {
+                var o = database.AssessmentManager.GetAt(course.ObjectiveID);
+                // finish initialization
+            }
+            else
+            {
+                // no assessment added
+            }
+
         }
 
         private async void closeButton_Clicked(object sender, EventArgs e)
@@ -41,9 +101,9 @@ namespace TermTracker
             }
         }
 
-        private void saveButton_Clicked(object sender, EventArgs e)
+        private async void saveButton_Clicked(object sender, EventArgs e)
         {
-            if (courseNameEditor.Text.Length > 0)
+            if (courseNameEditor.Text != null && courseNameEditor.Text.Length > 0)
             {
                 course.Name = courseNameEditor.Text;
                 courseNameEditor.Text = "";
@@ -55,7 +115,7 @@ namespace TermTracker
 
             // this is not done
 
-            database.CourseManager.UpdateAsync(course).Wait();
+            await database.CourseManager.UpdateAsync(course);
             saved = true;
         }
     }

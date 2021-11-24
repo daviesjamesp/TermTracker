@@ -10,6 +10,7 @@ namespace TermTracker
     public partial class App : Application
     {
         static ModelDB modelDB;
+        public static NavigationPage navigationPage;
 
         public static ModelDB Database
         {
@@ -24,7 +25,8 @@ namespace TermTracker
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new TermOverviewPage(Database));
+            navigationPage = new NavigationPage(new TermOverviewPage(Database));
+            MainPage = navigationPage;
         }
 
         protected override void OnStart()

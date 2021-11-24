@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TermTracker.Data;
 using TermTracker.Models;
@@ -28,6 +29,7 @@ namespace TermTracker
             term = _term;
             courseFrames = new List<Frame>() { c0Frame, c1Frame, c2Frame, c3Frame, c4Frame, c5Frame };
             TapSetup();
+
         }
 
         private void TapSetup()
@@ -97,7 +99,7 @@ namespace TermTracker
                     StartDate = DateTime.Today,
                     EndDate = DateTime.Today
                 };
-                database.CourseManager.AddAsync(courseToEdit).Wait();
+                await database.CourseManager.AddAsync(courseToEdit);
                 term.SetCourseIDBySlot(courseSlot, courseToEdit.ID);
                 database.TermManager.UpdateAsync(term).Wait();
             }
@@ -106,13 +108,9 @@ namespace TermTracker
 
         private Course GetCourseByTermSlot(int slot)
         {
-            if (cachedCourseList is null)
-            {
-                var list_task = database.CourseManager.GetAllAsync();
-                list_task.Wait();
-                cachedCourseList = list_task.Result;
-            }
-
+            var list_task = database.CourseManager.GetAllAsync();
+            list_task.Wait();
+            cachedCourseList = list_task.Result;
             int targetCourseID = term.GetCourseIDBySlot(slot);
 
             if (targetCourseID < 1)
@@ -139,7 +137,7 @@ namespace TermTracker
 
         private void saveButton_Clicked(object sender, EventArgs e)
         {
-            if (termNameEditor.Text.Length > 0)
+            if (termNameEditor.Text != null && termNameEditor.Text.Length > 0)
             {
                 term.Name = termNameEditor.Text;
                 termNameEditor.Text = "";
