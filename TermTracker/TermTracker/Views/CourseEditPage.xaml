@@ -27,39 +27,47 @@
                     </StackLayout>
                 </Grid>
             </Frame>
-            <Frame x:Name="courseStatusFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
+            <Frame x:Name="courseStatusFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,0,3,3" Padding="15,5,15,5">
                 <StackLayout>
-                    <Label Text="Course Status:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Picker x:Name="statusPicker" Margin="0,-15,0,0"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Course Status:" TextColor="Black" HorizontalOptions="Start" VerticalOptions="Center"/>
+                        <Picker x:Name="statusPicker" VerticalOptions="Center" Grid.Column="1" Margin="0,-10,0,0"/>
+                    </Grid>
                 </StackLayout>
             </Frame>
-            <Frame x:Name="instructorFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,3,3,3" Padding="15,5,15,5">
+            <Frame x:Name="instructorFrame" HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,0,3,3" Padding="15,5,15,5">
                 <StackLayout>
-                    <Label Text="Instructor Name:" TextColor="Black" Margin="0,0,0,0"/>
-                    <Editor x:Name="instructorNameEditor" Margin="0,-20,0,0"/>
-                    <Label Text="Instructor Email:" TextColor="Black" Margin="0,-5,0,0"/>
-                    <Editor x:Name="instructorEmailEditor" Margin="0,-20,0,0"/>
-                    <Label Text="Instructor Phone:" TextColor="Black" Margin="0,-5,0,0"/>
-                    <Editor x:Name="instructorPhoneEditor" Margin="0,-20,0,0"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Instructor Name:" TextColor="Black" Margin="0,0,0,0" VerticalOptions="Center"/>
+                        <Editor x:Name="instructorNameEditor" Grid.Column="1" Margin="0,-15,0,0"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Instructor Email:" TextColor="Black" Margin="0,0,0,0" VerticalOptions="Center"/>
+                        <Editor x:Name="instructorEmailEditor" Grid.Column="1" Margin="0,-20,0,0" VerticalOptions="Center"/>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Instructor Phone:" TextColor="Black" Margin="0,0,0,0"/>
+                        <Editor x:Name="instructorPhoneEditor" Grid.Column="1" Margin="0,-20,0,0"/>
+                    </Grid>
                 </StackLayout>
             </Frame>
-            <Frame x:Name="assmtFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,15">
+            <Frame HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,0,3,3" Padding="15,5,15,5">
                 <StackLayout>
-                    <Label Text="Assessments:" TextColor="Black" HorizontalOptions="Start"/>
-                    <Frame x:Name="perfFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
-                        <Grid ColumnDefinitions="*,*,*">
-                            <Label x:Name="perfName" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
-                            <Label x:Name="perfDates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
-                            <Label x:Name="perfArrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
-                        </Grid>
-                    </Frame>
-                    <Frame x:Name="objFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
-                        <Grid ColumnDefinitions="*,*,*">
-                            <Label x:Name="objName" Text="placeholder" TextColor="Black" HorizontalOptions="Start" Grid.Column="0"/>
-                            <Label x:Name="objDates" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
-                            <Label x:Name="objArrows" Text=">>" TextColor="Black" HorizontalOptions="End" Grid.Column="2"/>
-                        </Grid>
-                    </Frame>
+                    <Label Text="Notes" HorizontalOptions="Center" TextColor="Black"/>
+                    <Editor x:Name="notesEditor" />
+                </StackLayout>
+            </Frame>
+            <Frame x:Name="assmtFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,0,3,3" Padding="15,5,15,15">
+                <StackLayout>
+                    <Label Text="Assessments" TextColor="Black" HorizontalOptions="Center"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <Frame x:Name="perfFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray">
+                            <Label x:Name="perfName"/>
+                        </Frame>
+                        <Frame x:Name="objFrame" HorizontalOptions="FillAndExpand" CornerRadius="3" Padding="5,5,5,5" BorderColor="LightGray" Grid.Column="1">
+                            <Label x:Name="objName" />
+                        </Frame>
+                    </Grid>
                 </StackLayout>
             </Frame>
             <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">

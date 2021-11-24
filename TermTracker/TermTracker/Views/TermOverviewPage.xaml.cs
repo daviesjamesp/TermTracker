@@ -97,7 +97,7 @@ namespace TermTracker
 
                     var dateLabel = new Label
                     {
-                        Text = (target.StartDate != null && target.EndDate != null) ? target.StartDate.ToString("d") + " - " + target.EndDate.ToString("d") : "-----",
+                        Text = target.StartDate.ToString("M-d-yy") + " - " + target.EndDate.ToString("M-d-yy"),
                         HorizontalOptions = LayoutOptions.Center
                     };
                     Grid.SetColumn(dateLabel, 1);

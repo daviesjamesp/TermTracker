@@ -14,18 +14,11 @@ namespace TermTracker.Models
         public DateTime EndDate { get; set; }
         public string Status { get; set; }
         public string Notes { get; set; }
-        public int InstructorID { get; private set; }
+        public string InstructorName { get; set; }
+        public string InstructorEmail { get; set; }
+        public string InstructorPhone { get; set; }
         public int PerformanceID { get; private set; }
         public int ObjectiveID { get; private set; }
-
-        public void SetInstructor(Instructor instructor)
-        {
-            if (instructor is null)
-                InstructorID = 0;
-            else
-                InstructorID = instructor.ID;
-
-        }
 
         public void SetPerformance(Assessment assessment)
         {

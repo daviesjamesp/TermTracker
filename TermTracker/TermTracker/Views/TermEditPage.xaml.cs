@@ -72,7 +72,7 @@ namespace TermTracker
                 else
                 {
                     targetName.Text = course.Name;
-                    targetDates.Text = course.StartDate.ToString("d") + " - " + course.EndDate.ToString("d");
+                    targetDates.Text = course.StartDate.ToString("M-d-yy") + " - " + course.EndDate.ToString("M-d-yy");
                 }
             }
         }

@@ -17,6 +17,8 @@ namespace TermTracker
         private readonly Course course;
         private string[] statuses = new string[] { "Not Started", "In Progress", "Completed" };
 
+        private Assessment objective;
+        private Assessment performance;
         private bool saved = false;
 
         public CourseEditPage(ModelDB _database, Course _course)
@@ -27,6 +29,48 @@ namespace TermTracker
             foreach (var s in statuses)
             {
                 statusPicker.Items.Add(s);
+            }
+            TapSetup();
+        }
+
+        private void TapSetup()
+        {
+            var newTGR = new TapGestureRecognizer();
+            newTGR.Tapped += OpenAssessmentForEdit;
+            perfFrame.GestureRecognizers.Add(newTGR);
+            objFrame.GestureRecognizers.Add(newTGR);
+        }
+
+        private async void OpenAssessmentForEdit(object sender, EventArgs e)
+        {
+            var sendingFrame = sender as Frame;
+            if (sendingFrame == FindByName("perfFrame") as Frame)
+            {
+                if (performance is null)
+                {
+                    performance = new Assessment()
+                    {
+                        Name = "NewPerformanceAsst",
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now,
+                    };
+                    await database.AssessmentManager.AddAsync(performance);
+                }
+                await Navigation.PushAsync(new AssessmentEditPage(database, performance, true));
+            }
+            else
+            {
+                if (objective is null)
+                {
+                    objective = new Assessment()
+                    {
+                        Name = "NewObjectiveAsst",
+                        StartDate = DateTime.Now,
+                        EndDate = DateTime.Now,
+                    };
+                    await database.AssessmentManager.AddAsync(objective);
+                }
+                await Navigation.PushAsync(new AssessmentEditPage(database, objective, false));
             }
         }
 
@@ -42,13 +86,11 @@ namespace TermTracker
             startDatePicker.Date = course.StartDate;
             endDatePicker.Date = course.EndDate;
 
-            if (course.InstructorID > 1)
-            {
-                var i = database.InstructorManager.GetAt(course.InstructorID);
-                instructorNameEditor.Text = i.Name is null ? "" : i.Name;
-                instructorEmailEditor.Text = i.Email is null ? "" : i.Email;
-                instructorPhoneEditor.Text = i.Phone is null ? "" : i.Phone;
-            }
+            notesEditor.Text = course.Notes;
+            
+            instructorNameEditor.Text = course.InstructorName is null ? "" : course.InstructorName;
+            instructorEmailEditor.Text = course.InstructorEmail is null ? "" : course.InstructorEmail;
+            instructorPhoneEditor.Text = course.InstructorPhone is null ? "" : course.InstructorPhone;
 
             if (course.Status == "Completed")
             {
@@ -66,21 +108,27 @@ namespace TermTracker
             if (course.PerformanceID > 1)
             {
                 var p = database.AssessmentManager.GetAt(course.PerformanceID);
-                // finish initialization
+                perfName.Text = p.Name;
+                perfName.TextColor = Color.Black;
+                performance = p;
             }
             else
             {
-                // no assessment added
+                perfName.Text = "Add Performance";
+                performance = null;
             }
 
             if (course.ObjectiveID > 1)
             {
                 var o = database.AssessmentManager.GetAt(course.ObjectiveID);
-                // finish initialization
+                objName.Text = o.Name;
+                objName.TextColor = Color.Black;
+                objective = o;
             }
             else
             {
-                // no assessment added
+                objName.Text = "Add Objective";
+                objective = null;
             }
 
         }
@@ -113,10 +161,17 @@ namespace TermTracker
             course.StartDate = startDatePicker.Date;
             course.EndDate = endDatePicker.Date;
 
-            // this is not done
+            course.Status = statuses[statusPicker.SelectedIndex];
+
+            course.Notes = notesEditor.Text;
+
+            course.InstructorName = instructorNameEditor.Text;
+            course.InstructorEmail = instructorEmailEditor.Text;
+            course.InstructorPhone = instructorPhoneEditor.Text;
 
             await database.CourseManager.UpdateAsync(course);
             saved = true;
         }
+        
     }
 }
