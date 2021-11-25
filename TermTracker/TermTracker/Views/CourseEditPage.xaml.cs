@@ -7,6 +7,7 @@ using TermTracker.Data;
 using TermTracker.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace TermTracker
 {
@@ -14,18 +15,22 @@ namespace TermTracker
     public partial class CourseEditPage : ContentPage
     {
         private readonly ModelDB database;
+        private readonly Term parent;
+        private readonly int parentSlot;
         private readonly Course course;
         private string[] statuses = new string[] { "Not Started", "In Progress", "Completed" };
 
         private Assessment objective;
         private Assessment performance;
-        private bool saved = false;
 
-        public CourseEditPage(ModelDB _database, Course _course)
+        public CourseEditPage(ModelDB _database, Term _parent, int _parentSlot, Course _course)
         {
             InitializeComponent();
             database = _database;
+            parent = _parent;
+            parentSlot = _parentSlot;
             course = _course;
+            
             foreach (var s in statuses)
             {
                 statusPicker.Items.Add(s);
@@ -39,6 +44,26 @@ namespace TermTracker
             newTGR.Tapped += OpenAssessmentForEdit;
             perfFrame.GestureRecognizers.Add(newTGR);
             objFrame.GestureRecognizers.Add(newTGR);
+
+            newTGR = new TapGestureRecognizer();
+            newTGR.Tapped += Share_Tapped;
+            shareLabel.GestureRecognizers.Add(newTGR);
+        }
+
+        private async void Share_Tapped(object sender, EventArgs e)
+        {
+            if (notesEditor.Text is null)
+            {
+                await DisplayAlert("", "No notes to share!", "OK");
+                return;
+            }
+
+            course.Notes = notesEditor.Text;
+            await Share.RequestAsync(new ShareTextRequest
+            {
+                Text = notesEditor.Text,
+                Title = "Share Notes"
+            });
         }
 
         private async void OpenAssessmentForEdit(object sender, EventArgs e)
@@ -55,8 +80,10 @@ namespace TermTracker
                         EndDate = DateTime.Now,
                     };
                     await database.AssessmentManager.AddAsync(performance);
+                    course.PerformanceID = performance.ID;
+                    await database.CourseManager.UpdateAsync(course);
                 }
-                await Navigation.PushAsync(new AssessmentEditPage(database, performance, true));
+                await Navigation.PushAsync(new AssessmentEditPage(database, course, performance, true));
             }
             else
             {
@@ -69,8 +96,10 @@ namespace TermTracker
                         EndDate = DateTime.Now,
                     };
                     await database.AssessmentManager.AddAsync(objective);
+                    course.ObjectiveID = objective.ID;
+                    await database.CourseManager.UpdateAsync(course);
                 }
-                await Navigation.PushAsync(new AssessmentEditPage(database, objective, false));
+                await Navigation.PushAsync(new AssessmentEditPage(database, course, objective, false));
             }
         }
 
@@ -105,9 +134,9 @@ namespace TermTracker
                 statusPicker.SelectedIndex = 0;
             }
 
-            if (course.PerformanceID > 1)
+            if (course.PerformanceID > 0)
             {
-                var p = database.AssessmentManager.GetAt(course.PerformanceID);
+                var p = GetAsstByID(course.PerformanceID);
                 perfName.Text = p.Name;
                 perfName.TextColor = Color.Black;
                 performance = p;
@@ -118,9 +147,9 @@ namespace TermTracker
                 performance = null;
             }
 
-            if (course.ObjectiveID > 1)
+            if (course.ObjectiveID > 0)
             {
-                var o = database.AssessmentManager.GetAt(course.ObjectiveID);
+                var o = GetAsstByID(course.ObjectiveID);
                 objName.Text = o.Name;
                 objName.TextColor = Color.Black;
                 objective = o;
@@ -133,24 +162,34 @@ namespace TermTracker
 
         }
 
+        private Assessment GetAsstByID(int id)
+        {
+            var list_task = database.AssessmentManager.GetAllAsync();
+            list_task.Wait();
+            var asstList = list_task.Result;
+            return asstList.Where(a => a.ID == id).FirstOrDefault();
+        }
+
         private async void closeButton_Clicked(object sender, EventArgs e)
         {
-            if (saved)
+            var response = await DisplayAlert("", "Are you sure you want to remove this course?", "Yes", "No");
+            if (response)
             {
+                await database.CourseManager.DeleteAsync(course);
+                parent.SetCourseIDBySlot(parentSlot, 0);
+                await database.TermManager.UpdateAsync(parent);
                 await Navigation.PopAsync();
-            }
-            else
-            {
-                var response = await DisplayAlert("", "Quit without saving?", "Yes", "No");
-                if (response)
-                {
-                    await Navigation.PopAsync();
-                }
             }
         }
 
         private async void saveButton_Clicked(object sender, EventArgs e)
         {
+            if (instructorNameEditor.Text is null || instructorEmailEditor.Text is null || instructorPhoneEditor.Text is null || !instructorEmailEditor.Text.Contains("@"))
+            {
+                await DisplayAlert("", "Instructor fields are required.", "OK");
+                return;
+            }
+
             if (courseNameEditor.Text != null && courseNameEditor.Text.Length > 0)
             {
                 course.Name = courseNameEditor.Text;
@@ -170,7 +209,8 @@ namespace TermTracker
             course.InstructorPhone = instructorPhoneEditor.Text;
 
             await database.CourseManager.UpdateAsync(course);
-            saved = true;
+
+            await Navigation.PopAsync();
         }
         
     }

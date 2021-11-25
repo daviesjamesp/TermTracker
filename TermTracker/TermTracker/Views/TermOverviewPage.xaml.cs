@@ -15,6 +15,7 @@ namespace TermTracker
         private readonly ModelDB database;
 
         private List<Frame> termFrames = new List<Frame>();
+        private bool notificationsShown = false;
 
         public TermOverviewPage(ModelDB _database)
         {
@@ -23,10 +24,102 @@ namespace TermTracker
             AddTapSetup();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
+            ShowNotifications();
+            if (database.TermManager.Count == 0)
+                await AddTestData();
             PopulateTerms();
+        }
+
+        private async Task<int> AddTestData()
+        {
+            var testObj = new Assessment()
+            {
+                Name = "Ex. Obj",
+                StartDate = DateTime.Today.AddDays(-2),
+                EndDate = DateTime.Today,
+                Notes = "Obj assessment notes"
+            };
+            await database.AssessmentManager.AddAsync(testObj);
+
+            var testPerf = new Assessment()
+            {
+                Name = "Ex. Perf",
+                StartDate = DateTime.Today.AddDays(-2),
+                EndDate = DateTime.Today.AddDays(1),
+                Notes = "Perf assessment notes"
+            };
+            await database.AssessmentManager.AddAsync(testPerf);
+
+            var testCourse = new Course()
+            {
+                Name = "Example Course",
+                StartDate = DateTime.Today.AddDays(-3),
+                EndDate = DateTime.Today.AddDays(3),
+                Notes = "Ex. course notes",
+                Status = "In Progress",
+                InstructorName = "James Davies",
+                InstructorEmail = "jda1553@wgu.edu",
+                InstructorPhone = "3602712741",
+                ObjectiveID = testObj.ID,
+                PerformanceID = testPerf.ID
+            };
+            await database.CourseManager.AddAsync(testCourse);
+
+            var testTerm = new Term()
+            {
+                Name = "Example Term",
+                StartDate = DateTime.Today.AddDays(-5),
+                EndDate = DateTime.Today.AddDays(5)
+            };
+            testTerm.SetCourseIDBySlot(0, testCourse.ID);
+            
+            return await database.TermManager.AddAsync(testTerm);
+        }
+
+        private async void ShowNotifications()
+        {
+            if (notificationsShown) return;
+
+            var termList_task = database.TermManager.GetAllAsync();
+            var courseList_task = database.CourseManager.GetAllAsync();
+            var asstList_task = database.AssessmentManager.GetAllAsync();
+
+            termList_task.Wait();
+            courseList_task.Wait();
+            asstList_task.Wait();
+
+            var termList = termList_task.Result;
+            var courseList = courseList_task.Result;
+            var asstList = asstList_task.Result;
+
+            foreach (var t in termList)
+            {
+                if (t.StartDate == DateTime.Today)
+                    await DisplayAlert("", $"Term {t.Name} starts today.", "OK");
+                if (t.EndDate == DateTime.Today)
+                    await DisplayAlert("", $"Term {t.Name} ends today.", "OK");
+            }
+
+            foreach (var c in courseList)
+            {
+                if (c.StartDate == DateTime.Today)
+                    await DisplayAlert("", $"Course {c.Name} starts today.", "OK");
+                if (c.EndDate == DateTime.Today)
+                    await DisplayAlert("", $"Course {c.Name} ends today.", "OK");
+            }
+
+            foreach (var a in asstList)
+            {
+                if (a.StartDate == DateTime.Today)
+                    await DisplayAlert("", $"Assessment {a.Name} starts today.", "OK");
+                if (a.EndDate == DateTime.Today)
+                    await DisplayAlert("",$"Assessment {a.Name} is due today.","OK");
+            }
+
+            notificationsShown = true;
         }
 
         private void AddTapSetup()

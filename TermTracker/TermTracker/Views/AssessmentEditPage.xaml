@@ -1,12 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TermTracker.AssessmentEditPage">
+             x:Class="TermTracker.AssessmentEditPage"
+             NavigationPage.HasBackButton="False">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Label x:Name="asstTitleLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Title"/>
+        </StackLayout>
+    </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Frame x:Name="asstGlobalAttributesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,6,3,3" Padding="15,5,15,5">
+                <StackLayout>
+                    <Label Text="Change Assessment Name:" TextColor="Black" HorizontalOptions="Start"/>
+                    <Editor x:Name="asstNameEditor" Margin="0,-20,0,0"/>
+                </StackLayout>
+            </Frame>
+            <Frame x:Name="asstDatesFrame" HorizontalOptions="FillAndExpand" BorderColor="black" Margin="3,3,3,3" Padding="15,5,15,5">
+                <Grid ColumnDefinitions="*,*">
+                    <StackLayout>
+                        <Label Text="Start Date:" TextColor="Black" HorizontalOptions="Start"/>
+                        <DatePicker x:Name="startDatePicker" Margin="0,-5,0,0"/>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1">
+                        <Label Text="End Date:" TextColor="Black" HorizontalOptions="Start"/>
+                        <DatePicker x:Name="endDatePicker" Margin="0,-5,0,0"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            <Frame HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,0,3,3" Padding="15,5,15,5">
+                <StackLayout>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Notes" HorizontalOptions="Center" TextColor="Black"/>
+                        <Label x:Name="shareLabel" Grid.Column="1" Text="Share" TextColor="Blue"  HorizontalOptions="End"/>
+                    </Grid>
+                    <Editor x:Name="notesEditor" />
+                </StackLayout>
+            </Frame>
+            <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">
+                <Button x:Name="removeButton" Text="Remove" Clicked="closeButton_Clicked"/>
+                <Button x:Name="saveButton" Text="Save" Grid.Column="1" Clicked="saveButton_Clicked"/>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

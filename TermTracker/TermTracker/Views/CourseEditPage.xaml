@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TermTracker.CourseEditPage">
+             x:Class="TermTracker.CourseEditPage"
+             NavigationPage.HasBackButton="False">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
             <Label x:Name="courseTitleLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Title"/>
@@ -53,7 +54,10 @@
             </Frame>
             <Frame HorizontalOptions="FillAndExpand" BorderColor="Black" Margin="3,0,3,3" Padding="15,5,15,5">
                 <StackLayout>
-                    <Label Text="Notes" HorizontalOptions="Center" TextColor="Black"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="Notes" HorizontalOptions="Start" TextColor="Black"/>
+                        <Label x:Name="shareLabel" Grid.Column="1" Text="Share" TextColor="Blue"  HorizontalOptions="End"/>
+                    </Grid>
                     <Editor x:Name="notesEditor" />
                 </StackLayout>
             </Frame>
@@ -71,7 +75,7 @@
                 </StackLayout>
             </Frame>
             <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">
-                <Button x:Name="closeButton" Text="Close" Clicked="closeButton_Clicked"/>
+                <Button x:Name="removeButton" Text="Remove" Clicked="closeButton_Clicked"/>
                 <Button x:Name="saveButton" Text="Save" Grid.Column="1" Clicked="saveButton_Clicked"/>
             </Grid>
         </StackLayout>

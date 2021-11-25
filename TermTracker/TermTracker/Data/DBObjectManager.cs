@@ -2,6 +2,7 @@
 using SQLite;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace TermTracker.Data
@@ -45,6 +46,16 @@ namespace TermTracker.Data
         public Task<int> DeleteAsync(T t)
         {
             return dbconnection.DeleteAsync(t);
+        }
+
+        public int Count
+        {
+            get
+            {
+                var tListTask = GetAllAsync();
+                tListTask.Wait();
+                return tListTask.Result.Count;
+            }
         }
     }
 }

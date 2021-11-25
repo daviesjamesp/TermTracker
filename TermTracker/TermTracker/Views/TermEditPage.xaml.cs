@@ -103,7 +103,7 @@ namespace TermTracker
                 term.SetCourseIDBySlot(courseSlot, courseToEdit.ID);
                 database.TermManager.UpdateAsync(term).Wait();
             }
-            await Navigation.PushAsync(new CourseEditPage(database, courseToEdit));
+            await Navigation.PushAsync(new CourseEditPage(database, term, courseSlot, courseToEdit));
         }
 
         private Course GetCourseByTermSlot(int slot)
@@ -121,21 +121,15 @@ namespace TermTracker
 
         private async void closeButton_Clicked(object sender, EventArgs e)
         {
-            if (saved)
+            var response = await DisplayAlert("", "Are you sure you want to remove this term?", "Yes", "No");
+            if (response)
             {
+                await database.TermManager.DeleteAsync(term);
                 await Navigation.PopAsync();
-            }
-            else
-            {
-                var response = await DisplayAlert("", "Quit without saving?", "Yes", "No");
-                if (response)
-                {
-                    await Navigation.PopAsync();
-                }
             }
         }
 
-        private void saveButton_Clicked(object sender, EventArgs e)
+        private async void saveButton_Clicked(object sender, EventArgs e)
         {
             if (termNameEditor.Text != null && termNameEditor.Text.Length > 0)
             {
@@ -149,6 +143,8 @@ namespace TermTracker
 
             database.TermManager.UpdateAsync(term).Wait();
             saved = true;
+
+            await Navigation.PopAsync();
         }
     }
 }

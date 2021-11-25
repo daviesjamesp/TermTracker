@@ -17,23 +17,7 @@ namespace TermTracker.Models
         public string InstructorName { get; set; }
         public string InstructorEmail { get; set; }
         public string InstructorPhone { get; set; }
-        public int PerformanceID { get; private set; }
-        public int ObjectiveID { get; private set; }
-
-        public void SetPerformance(Assessment assessment)
-        {
-            if (assessment is null)
-                PerformanceID = 0;
-            else
-                PerformanceID = assessment.ID;
-        }
-
-        public void SetObjective(Assessment assessment)
-        {
-            if (assessment is null)
-                ObjectiveID = 0;
-            else
-                ObjectiveID = assessment.ID;
-        }
+        public int PerformanceID { get; set; }
+        public int ObjectiveID { get; set; }
     }
 }

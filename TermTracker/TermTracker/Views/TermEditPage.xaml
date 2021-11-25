@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TermTracker.TermEditPage">
+             x:Class="TermTracker.TermEditPage"
+             NavigationPage.HasBackButton="False">
     <NavigationPage.TitleView>
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal" >
             <Label x:Name="termTitleLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Title"/>
         </StackLayout>
     </NavigationPage.TitleView>
@@ -75,7 +76,7 @@
                 </StackLayout>
             </Frame>
             <Grid x:Name="buttonGrid" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="*,*" Padding="15,5,15,15">
-                <Button x:Name="closeButton" Text="Close" Clicked="closeButton_Clicked"/>
+                <Button x:Name="removeButton" Text="Remove" Clicked="closeButton_Clicked"/>
                 <Button x:Name="saveButton" Text="Save" Grid.Column="1" Clicked="saveButton_Clicked"/>
             </Grid>
         </StackLayout>

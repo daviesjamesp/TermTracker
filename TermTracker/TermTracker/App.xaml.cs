@@ -17,7 +17,7 @@ namespace TermTracker
             get
             {
                 if (modelDB is null)
-                    modelDB = new ModelDB(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Notes.db3"));
+                    modelDB = new ModelDB(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "termtracker_notes.db3"));
                 return modelDB;
             }
         }
@@ -25,9 +25,13 @@ namespace TermTracker
         public App()
         {
             InitializeComponent();
+
             navigationPage = new NavigationPage(new TermOverviewPage(Database));
             MainPage = navigationPage;
+
         }
+
+        
 
         protected override void OnStart()
         {
